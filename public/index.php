@@ -4,6 +4,8 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+// ÇÖZÜM: config.php dosyasını en başta dahil ediyoruz.
+// Böylece BASE_URL gibi sabitler projenin her yerinde kullanılabilir olur.
 require_once __DIR__ . '/../config.php';
 
 $request_uri = $_GET['url'] ?? 'home';
@@ -19,6 +21,9 @@ switch ($request_uri) {
         require_once __DIR__ . '/../register.php';
         break;
 
+    case 'register-action':
+        require_once __DIR__ . '/../src/Actions/auth/register_action.php';
+        break;
 
     default:
         http_response_code(404);
