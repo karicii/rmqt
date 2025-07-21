@@ -4,8 +4,9 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// ÇÖZÜM: config.php dosyasını en başta dahil ediyoruz.
-// Böylece BASE_URL gibi sabitler projenin her yerinde kullanılabilir olur.
+// SORUNU ÇÖZEN SATIR:
+// Bütün ayarları ve sabitleri (BASE_URL gibi) projenin geri kalanına
+// tanıtmak için config.php dosyasını burada çağırıyoruz.
 require_once __DIR__ . '/../config.php';
 
 $request_uri = $_GET['url'] ?? 'home';
@@ -14,7 +15,9 @@ $request_uri = trim($request_uri, '/');
 switch ($request_uri) {
     case '':
     case 'home':
-        echo "Ana Sayfa";
+        require_once __DIR__ . '/../public/includes/header.php';
+        echo "<h1>Ana Sayfa</h1>";
+        require_once __DIR__ . '/../public/includes/footer.php';
         break;
 
     case 'register':
@@ -27,6 +30,8 @@ switch ($request_uri) {
 
     default:
         http_response_code(404);
-        echo "404 Sayfa Bulunamadı";
+        require_once __DIR__ . '/../public/includes/header.php';
+        echo "<h1>404 - Sayfa Bulunamadı</h1>";
+        require_once __DIR__ . '/../public/includes/footer.php';
         break;
 }

@@ -1,10 +1,30 @@
 <?php
+require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/public/includes/header.php';
 ?>
 
 <div class="form-container">
     <h3>Yeni Hesap Oluştur</h3>
-    <form action="<?= BASE_URL ?>/register-action" method="POST">
+
+    <?php
+    if (!empty($_GET['error'])) {
+        $error = $_GET['error'];
+        $messages = [
+            'missing_fields' => 'Lütfen tüm alanları doldurun.',
+            'invalid_email' => 'Lütfen geçerli bir e-posta adresi girin.',
+            'password_short' => 'Parola en az 8 karakter olmalıdır.',
+            'user_exists' => 'Bu kullanıcı adı veya e-posta zaten kayıtlı.',
+            'db_error' => 'Bir veritabanı hatası oluştu. Lütfen daha sonra tekrar deneyin.'
+        ];
+        if (isset($messages[$error])) {
+            echo '<div class="error-message">' . htmlspecialchars($messages[$error]) . '</div>';
+        } else {
+            echo '<div class="error-message">Bilinmeyen bir hata oluştu.</div>';
+        }
+    }
+    ?>
+
+    <form action="<?= BASE_URL ?>/register-action.php" method="POST">
         <div class="form-group">
             <label for="username">Kullanıcı Adı</label>
             <input type="text" id="username" name="username" required>
